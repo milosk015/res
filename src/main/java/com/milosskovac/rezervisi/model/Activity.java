@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Validated
 @Getter @Setter
@@ -23,10 +24,8 @@ public class Activity {
   //  @Column(unique = true)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private City city;
+    @OneToMany(mappedBy = "activity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Objects> objects;
+
 
 }

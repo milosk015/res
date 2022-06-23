@@ -7,7 +7,7 @@ import com.milosskovac.rezervisi.repository.ActivityRepo;
 import com.milosskovac.rezervisi.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,9 +22,9 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Optional<Activity> findById(Integer id) {
-        Optional<Activity> activity = activityRepo.findById(id);
-        if(activity.isEmpty())throw new NoSuchElementFoundException("Nema delatnosti pod tim ID-jem");
+    public Activity findById(Integer id) {
+        Activity activity = activityRepo.findId(id);
+        if(activity==null)throw new NoSuchElementFoundException("Nema delatnosti pod tim ID-jem");
         return activity;
     }
 
@@ -34,11 +34,11 @@ public class ActivityServiceImpl implements ActivityService {
         return activityRepo.findByName(name);
     }
 
-  /*  @Override
+    @Override
     public List<Activity> getActivities() {
 
         return activityRepo.findAll();
-    }*/
+    }
 
     @Override
     public Activity save(Activity activity) {

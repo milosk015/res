@@ -1,54 +1,63 @@
 package com.milosskovac.rezervisi.controller;
 
-import com.milosskovac.rezervisi.model.City;
+import com.milosskovac.rezervisi.DTO.CityDTO;
 import com.milosskovac.rezervisi.serviceImpl.CityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Optional;
 
+@Validated
 @RestController
 public class CityController {
 
     @Autowired
     private CityServiceImpl cityService;
 
-    @GetMapping(path = "/grad/name")
-    public City getCityByName(@RequestParam(value = "name", required = true) String name) {
-        return cityService.findByName(name);
+    @GetMapping(path = "/city/name")
+    public ResponseEntity<CityDTO> getCityByName(@Valid @NotEmpty(message = "Neispravan unos - ime je obavezno")
+                                     @RequestParam(value = "name", required = true) String name) {
+        CityDTO cityDTO = cityService.findByName(name);
+        return ResponseEntity.ok(cityDTO);
     }
 
-    @GetMapping(path = "/grad/id")
-    public Optional<City> getCityById(@RequestParam(value = "id", required = true) Integer id) {
-        return cityService.findById(id);
+    @GetMapping(path = "/city/id")
+    public ResponseEntity<CityDTO> getCityById(@RequestParam(value = "id", required = true) Integer id) {
+        return ResponseEntity.ok(cityService.findById(id));
     }
 
-    @GetMapping(path = "/gradovi")
-    public List<City> getCities() {
-        return cityService.getCities();
+    @GetMapping(path = "/city/list")
+    public ResponseEntity<List<CityDTO>> getCities() {
+        return ResponseEntity.ok(cityService.getCities());
     }
 
-    @PostMapping(path = "/grad/input")
-    public City addCity(@Valid @RequestParam(value = "name", required = true) String name ) {
-       City city = new City();
-       city.setName(name);
-       return cityService.save(city);
+    @GetMapping("/cityCount")
+    public ResponseEntity<List>  getCityCount(){
+        return ResponseEntity.ok(cityService.getCityCount());
     }
 
-   @PutMapping(path = "/grad/update")
-    public City updateCity(@RequestParam(value = "oldName", required = true) String oldName,
-                           @RequestParam(value = "newName", required = true) String newName) {
-        return cityService.updateCity(oldName, newName);
+    @PostMapping(path = "/city/input")
+    public ResponseEntity<CityDTO> addCity(@Valid @RequestBody CityDTO cityDTO ) {
+       cityDTO.getName();
+       return ResponseEntity.ok(cityService.save(cityDTO));
+    }
+
+   @PutMapping(path = "/city/update")
+    public ResponseEntity<CityDTO> updateCity(@Valid @RequestParam(value = "oldName", required = true) @
+           NotNull(message = "Name is mandatory")String oldName,
+                             @Valid @RequestParam(value = "newName", required = true) @NotNull(message = "Name is mandatory") String newName) {
+        return ResponseEntity.ok(cityService.updateCity(oldName, newName));   // nisi obradio kad postoji novo ime vec i obrnuto
 
     }
 
-    @DeleteMapping(path = "/grad/delete")
+    @DeleteMapping(path = "/city/delete")
     public void deleteCity(@RequestParam(value = "name", required = true) String name) {
-
         cityService.deleteCity(name);
     }
 }

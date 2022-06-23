@@ -8,10 +8,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface CityRepo extends JpaRepository<City,Integer> {
-    @Query(value="select id, name from City where id = :id")
-    Optional<City> findById(@Param("id") Integer id);
-  //  @Query(value="select id, name from City where name = :name")
-    City findByName(@Param("name") String name);
+    @Query(value="SELECT c FROM City c WHERE c.id = :id")
+    City findId(@Param("id") Integer id);
+
+    @Query(value="SELECT c FROM City c WHERE c.name = :name")
+    City findByName(@Param("name")String name);
 
     City save(City city );
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,25 +25,30 @@ public class ActivityController {
 
     @GetMapping(path = "/activity/name")
     public ResponseEntity<Activity> getActivityByName(@RequestParam(value="name", required = true) String name){
-        Activity activity = activityService.findByName(name);
-        return new ResponseEntity<>(activity, HttpStatus.OK);
+        return ResponseEntity.ok(activityService.findByName(name));
     }
 
     @GetMapping(path = "/activity/id")
-    public ResponseEntity<Optional> getActivityById(@RequestParam(value="id",required = true) Integer id){
-        Optional<Activity> activity = activityService.findById(id);
-        return new ResponseEntity<>(activity,HttpStatus.OK);
+    public ResponseEntity<Activity> getActivityById(@RequestParam(value="id",required = true) Integer id){
+        return ResponseEntity.ok(activityService.findById(id));
+
     }
 
-    @PostMapping(path = "/activity/input")
-     public Activity addActivity(@RequestParam(value="name",required = true) String name){
-        City city = cityService.findByName("Banja");
+    @GetMapping(path="/activity/list")
+    public ResponseEntity<List<Activity>> getActivityList(){
+        return ResponseEntity.ok(activityService.getActivities());
+    }
+
+   /* @PostMapping(path = "/activity/input")
+     public ResponseEntity<Activity> addActivity(@RequestParam(value="name",required = true) String name,
+                                                  @RequestParam(value="cityName",required = true) String cityName){
+        City city = cityService.findByName(cityName);
         Activity activity = new Activity();
         activity.setName(name);
         activity.setCity(city);
-        //Integer city_id = 9; //city.getId();
-        return activityService.save(activity);
+        activityService.save(activity);
+        return new ResponseEntity<>(activity,HttpStatus.OK);
 
-    }
+    }*/
 
 }

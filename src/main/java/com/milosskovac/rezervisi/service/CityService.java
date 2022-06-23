@@ -1,16 +1,17 @@
 package com.milosskovac.rezervisi.service;
 
-import com.milosskovac.rezervisi.model.City;
+import com.milosskovac.rezervisi.DTO.CityDTO;
 import java.util.List;
-import java.util.Optional;
 
 public interface CityService {
 
-    Optional<City> findById(Integer id);
-    City findByName(String name);
-    List<City> getCities();
-    City save(City city);
-    City updateCity(String oldName,String newName);
+    CityDTO findById(Integer id);
+    CityDTO findByName(String name);
+    List<CityDTO> getCities();
+    CityDTO save(CityDTO city);
+    CityDTO updateCity(String oldName,String newName);
     void deleteCity(String name);
    // void deleteCityId(Integer id);
+
+
 }
